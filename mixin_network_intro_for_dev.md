@@ -169,7 +169,7 @@ curl -X POST -H "Authorization: Bearer ACCESS_TOKEN" -H "Content-Type: applicati
 这种使用场景需要使用标准的JWT RSA token，
 此后对所有的 API 访问包含上面签名过的 JWT token 做为一个 Bearer Authorization HTTP header。
 
-#### 1. 通过上面 APP 的 JWT RSA （ACCESS_TOKEN）签名， 创建用户(主播或者土豪)
+#### 3.2.1 通过上面 APP 的 JWT RSA （ACCESS_TOKEN）签名， 创建用户(主播或者土豪)
 
 *注意：这里是 APP 的 ACCESS_TOKEN *
 
@@ -194,7 +194,7 @@ curl -X POST -H "Authorization: Bearer ACCESS_TOKEN" -H "Content-Type: applicati
   }
 }
 
-#### 2. 为主播或土豪准备转帐需要的 PIN (支付密码)
+#### 3.2.2 为主播或土豪准备转帐需要的 PIN (支付密码)
 
 每个 Mixin 的用户都需要有一个 PIN 码，转帐要用。创建新用户的时候是不包含这个密码的，所以需要更新。
 
@@ -207,17 +207,30 @@ curl -X POXT -H "Authorization: Bearer ACCESS_TOKEN" -H "Content-Type: applicati
 "pin": "encrypted_pin", // 加密的 pin
 }
 
-在post请求中使用的pin如何获得？
+#### 在post请求中使用的加密的pin的获取方法
 
 在开发者dashboard中获得的pin_token 是一个经过base64 编码字符串，并且经过了公钥加密，
 
 
-我们需要首先对pin_token 以base64进行解码，然后用获取的私钥对字符进行解密，获得加密的key
+我们需要首先对PIN_TOKEN 以base64进行解码，然后用获取的私钥对字符进行RSA512解密，获得加密的key
 
 然后组织待加密的内容：
 
-dashboard获取的pin + timestamp + (8字节计数器)
+pin + timestamp + 计数器
 
+pin是从dashboard获取的短数字，假设是123456
+
+timestamp是 unix的utc时间戳，类似1524723524，用hex表示就是 0x5AE16F44, 8字节，64位。低字节在前，高字节在后。
+
+计数器是一个本地存储整型数，类似12, 8字节，64位，低字节在前，高字节在后，每次上发的计数器必须比上一次大，无论发送成功还是失败。
+
+将整个内容看成一个数组，或者byte array，或者字符串都可以
+
+那么整个内容就是 0x363534333231 + 0x446FE15A00000000
+
+
+
+将整个内容看成一个数组，或者byte array，或者字符串都可
 用key对内容用AES加密算法加密。
 如何得到加密的 PIN
 1. 服务器返回的 pin_token 解密，得到 key
