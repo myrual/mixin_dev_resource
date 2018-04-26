@@ -50,6 +50,7 @@ API 认证方式为标准的 JWT RSA 签名，JWT claims 必须包含的信息�
 		"sig": sha256(method+URI+body),  // ( "POST" + "/Transfer" + "{"key":value})
 ```
 
+
 ### 3.1 获取某个Mixin app的用户
 
 引导用户访问下面的网址，用户通过Mixin App摄像头扫码就可以登陆
@@ -160,6 +161,38 @@ curl -X POST -H "Authorization: Bearer ACCESS_TOKEN" -H "Content-Type: applicati
 { "type": "transfer", "snapshot_id": UUID, "trace_id": UUID, ... }
 ```
 
+#### 在post请求中使用的加密的pin的获取方法
+
+在开发者dashboard中获得的pin_token 是一个经过base64 编码字符串，并且经过了公钥加密，
+
+
+我们需要首先对PIN_TOKEN 以base64进行解码，然后用获取的私钥对字符进行RSA512解密，获得AES加密需要的key，暂时称为AES_KEY
+
+然后组织待加密的内容：
+
+pin + timestamp + 计数器
+
+pin是从dashboard获取的短数字，假设是123456
+
+timestamp是 unix的utc时间戳，类似1524723524，用hex表示就是 0x5AE16F44, 8字节，64位。低字节在前，高字节在后。
+
+计数器是一个本地存储整型数，类似12, 8字节，64位，低字节在前，高字节在后，每次上发的计数器必须比上一次大，无论发送成功还是失败。
+
+将整个内容看成一个数组，或者byte array，或者字符串都可以
+
+那么整个内容就是 0x363534333231 + 0x446FE15A00000000 + 0x0100000000000000
+
+得到内容之后，如果内容长度不是16的整数倍，需要在尾部补齐一些数据为16的整数倍。
+
+具体的补齐内容是需要补齐的字节的数量。比如需要补齐10个字节才能满足16的整数倍，那么需要补齐10个0x0a，10个10
+
+将补齐后的数据使用AES加密算法，使用AES_KEY作为密钥进行加密。
+
+然后使用随机数生成器生成一个16字节的随机数组称为 iv，然后把加密后的结果追加在随机数组后面。
+
+然后把整个iv+加密结果进行base64编码，作为上传参数的里面的pin的值
+
+
 #### 3.1.2 引导用户给别的用户转账
 
 
@@ -205,27 +238,6 @@ curl -X POXT -H "Authorization: Bearer ACCESS_TOKEN" -H "Content-Type: applicati
 "old_pin": "", // 默认值是空
 "pin": "encrypted_pin", // 加密的 pin
 }
-
-#### 在post请求中使用的加密的pin的获取方法
-
-在开发者dashboard中获得的pin_token 是一个经过base64 编码字符串，并且经过了公钥加密，
-
-
-我们需要首先对PIN_TOKEN 以base64进行解码，然后用获取的私钥对字符进行RSA512解密，获得加密的key
-
-然后组织待加密的内容：
-
-pin + timestamp + 计数器
-
-pin是从dashboard获取的短数字，假设是123456
-
-timestamp是 unix的utc时间戳，类似1524723524，用hex表示就是 0x5AE16F44, 8字节，64位。低字节在前，高字节在后。
-
-计数器是一个本地存储整型数，类似12, 8字节，64位，低字节在前，高字节在后，每次上发的计数器必须比上一次大，无论发送成功还是失败。
-
-将整个内容看成一个数组，或者byte array，或者字符串都可以
-
-那么整个内容就是 0x363534333231 + 0x446FE15A00000000
 
 
 
