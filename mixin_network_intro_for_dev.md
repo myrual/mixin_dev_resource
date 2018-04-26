@@ -47,7 +47,7 @@ API 认证方式为标准的 JWT RSA 签名，JWT claims 必须包含的信息�
 		"iat": 签名时间，时间必须跟 Mixin 服务器时间基本一致,
 		"exp": 过期时间，建议不要设置太长，3 分钟足够,
 		"jti": 请求的唯一 ID，必须使用标准的 UUID 格式,
-		"sig": sha256(method+URI+body),
+		"sig": sha256(method+URI+body),  // ( "POST" + "/Transfer" + "{"key":value})
 ```
 
 ### 3.1 获取某个Mixin app的用户
@@ -91,7 +91,10 @@ POST https://api.mixin.one/oauth/token
 {u'data': {u'access_token': u'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJhaWQiOiI5NmMyNGI4Mi01MjY2LTQ5YWQtYjc4NS03MWZhYjE4Y2FiYTEiLCJleHAiOjE1NTU4NTc4MjEsImlhdCI6MTUyNDMyMTgyMSwiaXNzIjoiM2M1ZmQ1ODctNWFjMy00ZmI2LWIyOTQtNDIzYmEzNDczZjdkIn0.Hv78yzF40GeKxw4J0tIahd1tvYdlrmJw0YMZf8OTCZBclyr3Bi-nIAEZWnOej9YuQ3elyajI6UPBQdW22i4DHrSyDNt3i2d8YXfrOJ_F1h7Raq7whoLkVr2vAFuch-ZvVBEtTyv8RDkU8-36f4pgzdMSheb3gEQDtM1d904mNIc', u'scope': u'PROFILE:READ ASSETS:READ'}}
 ```
 这个access token是后面一些操作需要设置在http header里面的
+
+
 ```
+"""python code"""
 personinfo = requests.get('https://api.mixin.one/me', headers = {"Authorization":"Bearer " + access_token})
 ```
 使用上面的参数里面的数据可以访问到客户的一些基本信息
@@ -110,10 +113,6 @@ GET -H "Authorization: Bearer ACCESS_TOKEN" https://api.mixin.one/me
   }
 }
 ```
-
-
-
-
 
 
 ### 3.2 获取mixin app用户的资产列表
