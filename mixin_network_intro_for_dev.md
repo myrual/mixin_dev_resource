@@ -168,6 +168,8 @@ curl -X POST -H "Authorization: Bearer ACCESS_TOKEN" -H "Content-Type: applicati
 
 我们需要首先对PIN_TOKEN 以base64进行解码，然后用获取的私钥对字符进行RSA512解密，获得AES加密需要的key，暂时称为AES_KEY
 
+RSA512的具体算法是 PKCS1 OAEP，hash算法是sha256，label是dashboard 里面的sessionid，
+
 然后组织待加密的内容：
 
 pin + timestamp + 计数器
