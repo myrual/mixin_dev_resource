@@ -245,12 +245,6 @@ websocket参数分别是
 ```
 id必须是uuid格式。
 
-目前可以发的指令分别是
-
-| Action  | Parameter |Data  | Error |
-| ------------- | ------------- |------------- | ------------- |
-| LIST_PENDING_MESSAGES  | nil  |nil  | nil  |
-
 
 ### 3.2 自己拥有用户，仅仅使用mixin网络来转账
 
