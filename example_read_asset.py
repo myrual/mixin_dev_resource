@@ -97,7 +97,7 @@ class auth:
 </head>
 <body>
 <h1> Contact me at mixin with mixin id 31367 to know more</h1>
-<h1>Service provided by <a href="https://babelbank.io">Babel</a></h1>>
+<h1>Service provided by <a href="https://babelbank.io">Babel</a></h1>
 </body>
 </html> """
 
