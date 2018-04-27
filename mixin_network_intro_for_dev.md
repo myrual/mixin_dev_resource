@@ -11,20 +11,23 @@ https://mixin.one
 
 访问 https://developers.mixin.one/dashboard ， 使用Mixin App的摄像头扫描二维码登陆。
 
-填写注册App需要的信息，包括callback URL，目前图标暂时不是必选的。
+填写注册App需要的信息，包括callback URL，目前图标暂时不是必选的。Url和callback url也可以随便先填着。注册成功 App 之后，你就拥有了一个mixinapp里面的一个机器人账户，它的Mixin ID是7000开头的那一段数字。通过Mixin ID在Mixin Messenger里面查找加到通讯录之后就可以把它加到你自己创建的群里面。
 
-注册成功 App 之后，你就拥有了一个mixinapp里面的一个机器人账户，目前是7000开头的那一段数字。
+回到开发者界面，你可以进行以下操作产生相关信息，在整合App和Mixin的时候需要用到。
 
-点击相应 App 的 “Click to generate a new session”，会出现三组数据：请牢记在心， 因为私钥部分不会再显示一次。
+  1. 点击相应 APP 的 “Click to generate a new secret”， 会产生一个字符串，这个serect在下面获取access token中可以选择使用。
+  
+  2. 点击相应 App 的 “Click to generate a new session”，会出现三组数据和一个私钥：请牢记在心，因为私钥部分不会再显示一次。
+  
+      1. 第一行的 6 位数字是 api接入 的提现/转账PIN 码，此处也是机器人的提现/转账密码
+      
+      2. 第二行的 UUID 是 session ID，
+      
+      3. 第三行是PIN_TOKEN， 
+      
+      4. 最后一部分 RSA PRIVATE KEY 是跟 API 进行交互时用来签名 JWT 的私钥。
 
-第一行的 6 位数字是 api接入 的提现/转账PIN 码，此处也是机器人的提现/转账密码
-
-第二行的 UUID 是 session ID，
-
-第三行是PIN_TOKEN， 
-
-最后一部分 RSA PRIVATE KEY 是跟 API 进行交互时用来签名 JWT 的私钥。
-
+注意每次产生一个新的secret和session的相关信息之后，之前产生的secret和session相关信息都会失效。
 
 ## 3. 编程接入mixin网络
 
