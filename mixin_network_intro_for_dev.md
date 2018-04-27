@@ -4,7 +4,7 @@
 
 [2配置机器人](https://github.com/myrual/mixin_dev_resource/blob/master/mixin_network_intro_for_dev.md#2-开发者使用注册的mixin账户创建App并进行配置)
 
-[3接入mixin网络](https://github.com/myrual/mixin_dev_resource/blob/master/mixin_network_intro_for_dev.md#3-接入mixin网络)
+[3接入mixin网络](https://github.com/myrual/mixin_dev_resource/blob/master/mixin_network_intro_for_dev.md#3-编程接入mixin网络)
 
 
 ## 1. 开发者自己创建一个mixin 账户
