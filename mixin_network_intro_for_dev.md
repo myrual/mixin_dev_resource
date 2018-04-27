@@ -197,6 +197,60 @@ timestamp是 unix的utc时间戳，类似1524723524，用hex表示就是 0x5AE16
 
 #### 3.1.2 引导用户给别的用户转账
 
+### 3.2 收取相关的消息
+
+mixin服务器会给机器人一系列消息回执，包括但不限于
+
+机器人给其他用户付款后的流水，别人给机器付款的消息，用户给机器人发的消息
+
+机器人在收取到消息之后，需要向服务器发送消息接受成功的回执，mixin客户端才会显示消息已经送达。
+
+#### 3.2.1 接收消息流程
+
+1. 创建websocket客户端，然后连接到服务器上
+2. 发送开始监听网络命令
+3. 服务器开始推送各种消息
+4. 处理消息并且与服务器交互
+
+##### websocket参数配置
+
+websocket参数分别是
+根目录是 wss://blaze.mixin.one/
+
+发送接收格式是binary
+
+自定义http header 参数 ["Authorization:Bearer " + ACCESS_TOKEN]，这个ACCESS_TOKEN就是标准的JWT_TOKEN，与付款API使用的算法相同。
+
+同时需要支持subprotocol "Mixin-Blaze-1"
+
+```
+    ws = websocket.WebSocketApp("wss://blaze.mixin.one/",
+                              on_message = on_message,
+                              on_error = on_error,
+                              on_close = on_close,
+                              header = ["Authorization:Bearer " + encoded],
+                              subprotocols = ["Mixin-Blaze-1"],
+                              on_data = on_data)
+```
+
+通过websocket发送的所有数据都是经过gzip压缩的，此处的gzip 压缩是将要发送的内容压缩成gzip文件格式然后发送。仅仅将内容通过zlib库压缩是不行的。
+
+##### 可以发送给服务器的指令和格式
+```
+完整格式 {"id":"uuid-value-xxxx","action":"yyyy", "parameter":"zzz", "data":"000111222", "error":"404"}
+
+如果不需要参数，那么直接key也不要写
+
+{"id":"uuid-value-xxxx","action":"yyyy"}
+```
+id必须是uuid格式。
+
+目前可以发的指令分别是
+
+| Action  | Parameter |Data  | Error |
+| ------------- | ------------- |------------- | ------------- |
+| LIST_PENDING_MESSAGES  | nil  |nil  | nil  |
+
 
 ### 3.2 自己拥有用户，仅仅使用mixin网络来转账
 
