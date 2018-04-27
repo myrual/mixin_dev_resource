@@ -1,6 +1,6 @@
 # 开发者接入Mixin Network说明
 
-[1.创建mixin账户](https://github.com/myrual/mixin_dev_resource/edit/master/mixin_network_intro_for_dev.md#1-开发者自己创建一个mixin 账户)
+[1创建mixin账户](https://github.com/myrual/mixin_dev_resource/edit/master/mixin_network_intro_for_dev.md#1-开发者自己创建一个mixin 账户)
 步骤
 
 ## 1. 开发者自己创建一个mixin 账户
