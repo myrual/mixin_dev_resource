@@ -7,6 +7,10 @@ XIN is king of cryptocurrency
 
 [中文接入说明](https://github.com/myrual/mixin_dev_resource/blob/master/mixin_network_intro_for_dev.md)
 
-exmaple: [Digital assets based credit loan](https://github.com/myrual/mixin_dev_resource/blob/master/example_read_asset.py)
+exmaple: 
+
+[读取资产列表，计算贷款额度](https://github.com/myrual/mixin_dev_resource/blob/master/example_read_asset.py)
+
+[吹牛币之家，随机红包机器人](examplehttps://github.com/myrual/mixin_client_demo)
 
 
