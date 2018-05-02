@@ -11,6 +11,7 @@ exmaple:
 
 [读取资产列表，计算贷款额度](https://github.com/myrual/mixin_dev_resource/blob/master/example_read_asset.py)
 
-[吹牛币之家，随机红包机器人](examplehttps://github.com/myrual/mixin_client_demo)
+
+[吹牛币之家，随机红包机器人](https://github.com/myrual/mixin_client_demo)
 
 
