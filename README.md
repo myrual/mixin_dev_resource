@@ -1,4 +1,6 @@
 # mixin_dev_resource
+The repo is obsolete, all development resource of Mixin Network is in https://github.com/awesome-mixin-network/mixin_network_sdk_resource
+
 XIN is king of cryptocurrency
 
 [Offical mixin dev resource] (http://developer.mixin.zone)
